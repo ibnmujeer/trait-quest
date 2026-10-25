@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="110" fill="#2E7D32"/>
+  <circle cx="256" cy="256" r="200" fill="#FFFBF2"/>
+  <!-- Ears -->
+  <path d="M134 200 L92 74 L214 148 Z" fill="#F57C00" stroke="#4E342E" stroke-width="12" stroke-linejoin="round"/>
+  <path d="M140 180 L114 100 L192 150 Z" fill="#FFE0B2"/>
+  <path d="M378 200 L420 74 L298 148 Z" fill="#F57C00" stroke="#4E342E" stroke-width="12" stroke-linejoin="round"/>
+  <path d="M372 180 L398 100 L320 150 Z" fill="#FFE0B2"/>
+  <!-- Head -->
+  <ellipse cx="256" cy="272" rx="138" ry="116" fill="#FB8C00" stroke="#4E342E" stroke-width="12"/>
+  <!-- Cheeks -->
+  <path d="M118 272 Q180 272 256 388 Q160 384 118 272 Z" fill="#FFF3E0"/>
+  <path d="M394 272 Q332 272 256 388 Q352 384 394 272 Z" fill="#FFF3E0"/>
+  <!-- Eyes -->
+  <circle cx="198" cy="256" r="18" fill="#3E2723"/>
+  <circle cx="192" cy="250" r="6" fill="#FFFFFF"/>
+  <circle cx="314" cy="256" r="18" fill="#3E2723"/>
+  <circle cx="308" cy="250" r="6" fill="#FFFFFF"/>
+  <!-- Nose -->
+  <ellipse cx="256" cy="310" rx="24" ry="16" fill="#3E2723"/>
+  <!-- Leaf badge -->
+  <path d="M360 360 Q440 320 426 414 Q374 440 360 360 Z" fill="#66BB6A" stroke="#2E7D32" stroke-width="10"/>
+</svg>

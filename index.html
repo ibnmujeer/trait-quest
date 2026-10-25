@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#2E7D32" />
+  <meta name="description" content="Trait Quest: Collect real animals, classify their traits, breed offspring, and test how they survive in Forest, Desert, and Snow habitats!" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Trait Quest – Animal Adaptation Lab</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="./assets/icon-192.svg" />
+  <link rel="apple-touch-icon" href="./assets/icon-192.svg" />
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Header & Goal Banner -->
+    <header class="top-header">
+      <div class="brand-area">
+        <img src="./assets/icon-192.svg" alt="Trait Quest Fox Logo" class="brand-logo" width="46" height="46" />
+        <div>
+          <h1 class="brand-title">Trait Quest</h1>
+          <p class="brand-subtitle">Animal Variation, Inheritance &amp; Adaptation Lab</p>
+        </div>
+      </div>
+
+      <!-- Current Mission Banner -->
+      <div class="quest-banner" id="questBanner">
+        <div class="quest-badge">🎯 CURRENT GOAL</div>
+        <div class="quest-text" id="questText">Create or find an animal that survives 75% or higher in the Forest!</div>
+      </div>
+
+      <!-- Header Controls & Habitat Progress Pills -->
+      <div class="header-actions">
+        <div class="habitat-pills" id="headerHabitatPills" aria-label="Habitat Progress">
+          <!-- Populated by JS -->
+        </div>
+        <button class="icon-btn" id="installPwaBtn" hidden title="Install Trait Quest App">
+          📲 <span>Install App</span>
+        </button>
+        <button class="icon-btn" id="soundToggleBtn" title="Toggle Sound Effects" aria-label="Toggle Sound">
+          🔊
+        </button>
+        <button class="icon-btn" id="instructionsHeaderBtn" title="How to Play Instructions" aria-label="Open Instructions">
+          ❓ <span>Instructions</span>
+        </button>
+        <button class="icon-btn teacher-header-btn" id="teacherNotesBtn" title="Teacher's Notes & Classroom Guide" aria-label="Open Teacher's Notes">
+          👩‍🏫 <span>Teacher's Notes</span>
+        </button>
+        <button class="icon-btn" id="guideModalBtn" title="Field Guide & Goals" aria-label="Open Field Guide">
+          📖 <span>Goals</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 4-Step Core Gameplay Ribbon (Clean 4-Tab Layout) -->
+    <nav class="main-nav" aria-label="Game Stages">
+      <button class="nav-tab active" data-tab="collect" id="tabBtn_collect">
+        <span class="step-num">1</span>
+        <span class="tab-icon">🔍</span>
+        <span class="tab-label">Collect</span>
+        <span class="tab-sub">Find Wild Variations</span>
+      </button>
+      <button class="nav-tab" data-tab="classify" id="tabBtn_classify">
+        <span class="step-num">2</span>
+        <span class="tab-icon">🗂️</span>
+        <span class="tab-label">Classify</span>
+        <span class="tab-sub">Sort by Traits</span>
+      </button>
+      <button class="nav-tab" data-tab="breed" id="tabBtn_breed">
+        <span class="step-num">3</span>
+        <span class="tab-icon">🧬</span>
+        <span class="tab-label">Breed</span>
+        <span class="tab-sub">Mix Parent Traits</span>
+      </button>
+      <button class="nav-tab" data-tab="test" id="tabBtn_test">
+        <span class="step-num">4</span>
+        <span class="tab-icon">🌍</span>
+        <span class="tab-label">Test Survival</span>
+        <span class="tab-sub">Forest • Desert • Snow</span>
+      </button>
+    </nav>
+
+    <!-- Main Stage Content Area -->
+    <main class="main-stage">
+      <!-- ==================== TAB 1: COLLECT ==================== -->
+      <section class="tab-panel active" id="panel_collect" aria-labelledby="tabBtn_collect">
+        <div class="stage-grid collect-layout">
+          <!-- Left: Wild Expedition Finder -->
+          <div class="card expedition-card">
+            <div class="card-header">
+              <div>
+                <h2>🔭 Wild Habitat Expedition</h2>
+                <p class="edu-hint">Notice how even animals of the <strong>same species</strong> have slight trait variations!</p>
+              </div>
+              <div class="expedition-controls">
+                <div class="habitat-selector-group" id="expeditionHabitatBtns">
+                  <!-- Populated by JS -->
+                </div>
+                <button class="primary-btn pulse-btn" id="newExpeditionBtn">
+                  🔄 Spot New Animals
+                </button>
+              </div>
+            </div>
+
+            <div class="wild-encounters-grid" id="wildEncountersGrid">
+              <!-- 3 Wild Animal Encounter Cards rendered here -->
+            </div>
+          </div>
+
+          <!-- Right: Player's Collected Animal Sanctuary -->
+          <div class="card sanctuary-card">
+            <div class="card-header">
+              <div>
+                <h2>🏡 Your Sanctuary (<span id="sanctuaryCount">0</span>)</h2>
+                <p class="edu-hint">Tap any animal to inspect its traits, breed it, or test it in a habitat.</p>
+              </div>
+            </div>
+            <div class="sanctuary-list" id="sanctuaryList">
+              <!-- Collected animals list -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 2: CLASSIFY ==================== -->
+      <section class="tab-panel" id="panel_classify" aria-labelledby="tabBtn_classify">
+        <div class="card classify-card">
+          <div class="card-header classify-header">
+            <div>
+              <h2>🗂️ Trait Classification Lab</h2>
+              <p class="edu-hint" id="classifyPromptText">
+                Group your animals by shared traits to see which features help in different habitats!
+              </p>
+            </div>
+            <div class="classify-mode-pills" id="classifyTraitSelector">
+              <!-- Coat / Ears / Colour / Adaptation buttons -->
+            </div>
+          </div>
+
+          <!-- Interactive Sorting Game Area -->
+          <div class="classify-workspace">
+            <!-- Unsorted Animals Queue -->
+            <div class="unsorted-tray">
+              <div class="tray-header">
+                <h3>🐾 Animals to Classify (<span id="unsortedCount">0</span> left)</h3>
+                <div class="tray-actions">
+                  <button class="secondary-btn small-btn" id="autoCheckClassifyBtn">✨ Reset &amp; Shuffle</button>
+                </div>
+              </div>
+              <p class="tap-instruction" id="classifyInstructionBanner">
+                👇 <strong>Step 1:</strong> Tap an animal below (or drag it) • <strong>Step 2:</strong> Tap the matching Trait Group box!
+              </p>
+              <div class="unsorted-cards-row" id="unsortedCardsRow">
+                <!-- Animal chips waiting to be sorted -->
+              </div>
+            </div>
+
+            <!-- 3 Classification Bins -->
+            <div class="classification-bins-grid" id="classificationBinsGrid">
+              <!-- 3 Bins rendered dynamically for the chosen trait -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 3: BREED ==================== -->
+      <section class="tab-panel" id="panel_breed" aria-labelledby="tabBtn_breed">
+        <div class="stage-grid breed-layout">
+          <!-- Left: Parent Selection & Trait Comparison Table -->
+          <div class="card breed-setup-card">
+            <div class="card-header">
+              <div>
+                <h2>🧬 Inheritance &amp; Breeding Center</h2>
+                <p class="edu-hint">Choose <strong>Parent A</strong> and <strong>Parent B</strong>. Their offspring will inherit a mix of traits from both parents!</p>
+              </div>
+            </div>
+
+            <div class="parents-comparison-grid">
+              <!-- Parent A Slot -->
+              <div class="parent-slot parent-a-slot" id="parentSlotA">
+                <!-- Populated by JS -->
+              </div>
+
+              <!-- Side-by-Side Trait Comparison Center Column -->
+              <div class="trait-bridge-column" id="traitComparisonBridge">
+                <!-- Shows Coat, Ears, Colour, Special comparison between Parent A and Parent B -->
+              </div>
+
+              <!-- Parent B Slot -->
+              <div class="parent-slot parent-b-slot" id="parentSlotB">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+
+            <div class="breed-action-bar">
+              <button class="breed-cta-btn" id="breedNowBtn">
+                ✨ Breed Offspring! ✨
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Offspring Nursery & Animal Picker -->
+          <div class="card offspring-reveal-card" id="offspringRevealCard">
+            <!-- Shows newly bred baby with inherited trait tags (From Parent A / From Parent B) + direct button to Test in Habitat -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 4: TEST SURVIVAL ==================== -->
+      <section class="tab-panel" id="panel_test" aria-labelledby="tabBtn_test">
+        <div class="stage-grid test-layout">
+          <!-- Left: Habitat Selector, Canvas Simulation & Controls -->
+          <div class="card habitat-stage-card">
+            <div class="card-header test-header">
+              <div>
+                <h2>🌍 Habitat Survival Test</h2>
+                <p class="edu-hint">Send your animal into a habitat to test how well its inherited traits match the environment!</p>
+              </div>
+              <div class="habitat-tabs" id="testHabitatSelector">
+                <!-- Forest, Desert, Snow buttons -->
+              </div>
+            </div>
+
+            <!-- Habitat Canvas Wrapper -->
+            <div class="canvas-stage-wrapper">
+              <canvas id="habitatCanvas" width="720" height="320"></canvas>
+              <div class="canvas-overlay-badge" id="canvasOverlayBadge">
+                Ready to test!
+              </div>
+            </div>
+
+            <!-- Selected Test Animal Bar & Launch Button -->
+            <div class="test-control-bar">
+              <div class="selected-test-animal-Summary" id="selectedTestAnimalSummary">
+                <!-- Populated by JS -->
+              </div>
+              <div class="test-control-buttons">
+                <button class="secondary-btn" id="changeTestAnimalBtn">🔄 Switch Animal</button>
+                <button class="breed-cta-btn test-run-btn" id="startSurvivalTestBtn">
+                  🚀 Run Survival Test!
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Survival Score Breakdown & Habitat Requirements -->
+          <div class="card survival-report-card" id="survivalReportCard">
+            <!-- Populated by JS: shows habitat rules before test, and detailed 0-100% trait score report during/after test -->
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal for Choosing an Animal (for Parent A, Parent B, or Habitat Test) -->
+  <div class="modal-backdrop" id="animalPickerModal" hidden>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="pickerModalTitle">Choose an Animal</h3>
+        <button class="close-modal-btn" id="closePickerModalBtn" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="picker-grid" id="pickerModalGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Teacher's Notes & Classroom Facilitation Guide (Top Header Bar) -->
+  <div class="modal-backdrop" id="teacherModal" hidden>
+    <div class="modal-dialog welcome-dialog">
+      <div class="modal-header teacher-modal-header">
+        <div class="welcome-title-wrap">
+          <span class="welcome-badge-icon">👩‍🏫🎓</span>
+          <div>
+            <h3>Teacher's Notes &amp; Classroom Guide</h3>
+            <p class="welcome-subtitle">Grades 3–6 Life Science: Variation, Classification, Inheritance &amp; Adaptation</p>
+          </div>
+        </div>
+        <button class="close-modal-btn" id="closeTeacherModalBtn" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body welcome-body">
+        <div class="teacher-banner">
+          <div>
+            <strong>📚 Curriculum &amp; Pedagogical Overview</strong>
+            <p>Designed for ages 8–12 to discover variation, classification, inheritance, and adaptation through hands-on experimentation.</p>
+          </div>
+          <span class="curriculum-badge">NGSS 3-LS3-1 • 3-LS3-2 • 3-LS4-2 • 3-LS4-3</span>
+        </div>
+
+        <div class="teacher-grid">
+          <div class="teacher-box">
+            <h3>🎯 1. Core Learning Objectives</h3>
+            <ul>
+              <li><strong>Intraspecific Variation (1. Collect):</strong> Even individuals of the <em>same species</em> (e.g., two Red Foxes or two Woodland Rabbits) naturally vary in coat thickness, ear size, and colour.</li>
+              <li><strong>Classification (2. Classify):</strong> Scientists group organisms by observable physical traits to understand how body structures function.</li>
+              <li><strong>Trait Inheritance (3. Breed):</strong> Offspring do not morph or "evolve" mid-life; they inherit a mix of traits from both parents (2 traits from Parent A and 2 traits from Parent B).</li>
+              <li><strong>Adaptation &amp; Survival (4. Test):</strong> Traits that help in one habitat (e.g., thick white fur in the Frozen Tundra) can be harmful in another (overheating in the Sunbaked Desert).</li>
+            </ul>
+          </div>
+
+          <div class="teacher-box">
+            <h3>⏱️ 2. Suggested 35–45 Minute Lesson Plan</h3>
+            <ol class="lesson-steps-list">
+              <li><strong>Warm-Up Hook (5 mins):</strong> Ask: <em>"Why does a Desert Fennec Fox have huge ears and a thin sandy coat, while an Arctic Fox has tiny ears and thick white fur?"</em></li>
+              <li><strong>Collect &amp; Classify (10 mins):</strong> Have students collect 3–4 wild animals and sort them in the <strong>Classify</strong> tab. Ask them to spot two animals of the same species that have different traits.</li>
+              <li><strong>Breeding &amp; Hypothesis Testing (15 mins):</strong> Challenge students to unlock the <strong>Sunbaked Desert</strong> (75%+ in Forest) and <strong>Frozen Tundra</strong> (80%+ in Desert) by selecting parents with helpful traits.</li>
+              <li><strong>Class Reflection (10 mins):</strong> Compare student champions and discuss why a 100% Snow survivor scores low in the Desert.</li>
+            </ol>
+          </div>
+
+          <div class="teacher-box">
+            <h3>💬 3. Classroom Discussion Prompts</h3>
+            <ul>
+              <li><em>"Look at two Red Foxes in your Sanctuary. Which traits are the same, and which traits vary?"</em></li>
+              <li><em>"When you bred Parent A and Parent B, did your baby get all the traits you wanted on the first try? Why do biologists sometimes need multiple generations?"</em></li>
+              <li><em>"Why do large ears help an animal survive in the Desert, while small ears help in the Frozen Tundra?"</em></li>
+              <li><em>"What happens when a Snowy White animal tries to hide in the brown Whispering Forest?"</em></li>
+            </ul>
+          </div>
+
+          <div class="teacher-box">
+            <h3>💡 4. Addressing Common Misconceptions</h3>
+            <ul>
+              <li><strong>Misconception:</strong> <em>"Individual animals transform or grow new body parts when placed in a new environment."</em><br/>
+                <strong>How Trait Quest Corrects It:</strong> An individual animal's traits never change during a habitat test. Better-adapted traits only arise by breeding parents and passing traits to offspring.</li>
+              <li><strong>Misconception:</strong> <em>"There is one 'best' or 'strongest' animal overall."</em><br/>
+                <strong>How Trait Quest Corrects It:</strong> There are no battles. Adaptation is always relative to a specific environment!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Goals, Field Guide & Progress Reset -->
+  <div class="modal-backdrop" id="guideModal" hidden>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>📖 Biologist Field Guide &amp; Quests</h3>
+        <button class="close-modal-btn" id="closeGuideModalBtn" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body" id="guideModalBody">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Welcome & Kid-Friendly Detailed Instructions Modal (Shows at start of game) -->
+  <div class="modal-backdrop" id="welcomeModal" hidden>
+    <div class="modal-dialog welcome-dialog">
+      <div class="modal-header welcome-header">
+        <div class="welcome-title-wrap">
+          <span class="welcome-badge-icon">🦊🔬</span>
+          <div>
+            <h3>Welcome to Trait Quest!</h3>
+            <p class="welcome-subtitle">Your Easy Step-by-Step Guide to Playing &amp; Winning</p>
+          </div>
+        </div>
+        <button class="close-modal-btn" id="closeWelcomeModalBtn" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body welcome-body">
+        <!-- Big Picture Story Intro -->
+        <div class="welcome-hero-banner">
+          <h4>👋 Hello, Junior Wildlife Scientist!</h4>
+          <p>
+            In <strong>Trait Quest</strong>, there are <strong>no battles</strong> and <strong>no monsters</strong>.
+            Instead, you explore real animals and discover how their body features—called <strong>Traits</strong>
+            (like 🧥 <em>Fur Thickness</em>, 👂 <em>Ear Size</em>, 🎨 <em>Coat Colour</em>, and ⚡ <em>Special Feet or Water Storage</em>)—help them stay safe and comfortable in nature!
+          </p>
+        </div>
+
+        <!-- 4 Easy Steps to Play -->
+        <h4 class="welcome-section-title">🕹️ How to Play in 4 Easy Steps:</h4>
+        <div class="how-to-steps-grid">
+          <div class="how-step-card step-1">
+            <div class="how-step-num">Step 1</div>
+            <div class="how-step-icon">🔍</div>
+            <h5>Collect Wild Animals</h5>
+            <p>
+              Go to the <strong>1. Collect</strong> tab and press <strong>"➕ Collect Animal"</strong>.
+              Look closely! Even two animals of the <em>same species</em> (like two Red Foxes) can have different ear sizes or fur thickness!
+            </p>
+          </div>
+
+          <div class="how-step-card step-2">
+            <div class="how-step-num">Step 2</div>
+            <div class="how-step-icon">🗂️</div>
+            <h5>Classify by Traits</h5>
+            <p>
+              Go to the <strong>2. Classify</strong> tab. Tap an animal in the top tray, then tap the matching box below (for example: <em>Thin Coat</em>, <em>Medium Fur</em>, or <em>Thick Fur</em>) to sort them like a real scientist!
+            </p>
+          </div>
+
+          <div class="how-step-card step-3">
+            <div class="how-step-num">Step 3</div>
+            <div class="how-step-icon">🧬</div>
+            <h5>Breed Two Parents</h5>
+            <p>
+              Go to the <strong>3. Breed</strong> tab and pick <strong>Parent A</strong> and <strong>Parent B</strong>.
+              Press <strong>"✨ Breed Offspring!"</strong> to hatch a baby that inherits <strong>2 traits from Parent A</strong> and <strong>2 traits from Parent B</strong>!
+            </p>
+          </div>
+
+          <div class="how-step-card step-4">
+            <div class="how-step-num">Step 4</div>
+            <div class="how-step-icon">🌍</div>
+            <h5>Test Survival in a Habitat</h5>
+            <p>
+              Go to the <strong>4. Test Survival</strong> tab and press <strong>"🚀 Run Survival Test!"</strong>.
+              Watch your animal cross the habitat and get a <strong>Survival Score from 0% to 100%</strong> based on how well its traits match the weather and land!
+            </p>
+          </div>
+        </div>
+
+        <!-- Cheat Sheet for the 3 Habitats -->
+        <h4 class="welcome-section-title">🗺️ Secret Tip: Which Traits Help Where?</h4>
+        <div class="habitat-tips-row">
+          <div class="hab-tip-card tip-forest">
+            <strong>🌲 Whispering Forest</strong>
+            <span>Needs: 🍂 Medium Fur • 🌿 Medium Ears • 🌲 Brown Coat • 🦌 Agile Legs</span>
+          </div>
+          <div class="hab-tip-card tip-desert">
+            <strong>🏜️ Sunbaked Desert</strong>
+            <span>Needs: 🌬️ Thin Coat • ☀️ Large Cooling Ears • 🏜️ Sandy Gold • 💧 Water Saver</span>
+          </div>
+          <div class="hab-tip-card tip-snow">
+            <strong>🏔️ Frozen Tundra</strong>
+            <span>Needs: ❄️ Thick Fluffy Fur • 🧊 Small Ears • 🏔️ Snowy White • 🐾 Snow-Shoe Feet</span>
+          </div>
+        </div>
+
+        <!-- Intended Outcome at the End of the Game -->
+        <div class="welcome-outcome-box">
+          <div class="outcome-trophy">🏆👑</div>
+          <div class="outcome-text">
+            <h4>🎯 How to Beat the Game (Your Ultimate Goal &amp; Ending):</h4>
+            <ul>
+              <li><strong>Mission 1:</strong> Score <strong>75% or higher</strong> in the 🌲 <strong>Whispering Forest</strong> to unlock the 🏜️ <strong>Sunbaked Desert</strong>!</li>
+              <li><strong>Mission 2:</strong> Collect &amp; breed desert traits to score <strong>80% or higher</strong> in the 🏜️ <strong>Sunbaked Desert</strong> and unlock the 🏔️ <strong>Frozen Tundra</strong>!</li>
+              <li><strong>Mission 3:</strong> Breed snow traits to score <strong>85% or higher</strong> in the 🏔️ <strong>Frozen Tundra</strong>!</li>
+              <li><strong>Grand Finale Outcome:</strong> Unlock all 3 habitats, breed a <strong>100% Perfect Survival Champion</strong>, and earn the <strong>👑 Golden Adaptation Crown</strong> — proving you understand how variation, inheritance, and adaptation help animals thrive everywhere on Earth!</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="welcome-footer-cta">
+          <button class="breed-cta-btn start-adventure-btn" id="startAdventureBtn">
+            🚀 Let's Start Playing!
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Celebration Notification -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Game Scripts (Vanilla JS, 100% Offline Ready) -->
+  <script src="./js/data.js"></script>
+  <script src="./js/audio.js"></script>
+  <script src="./js/art.js"></script>
+  <script src="./js/genetics.js"></script>
+  <script src="./js/storage.js"></script>
+  <script src="./js/habitat-sim.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>

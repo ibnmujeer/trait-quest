@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <rect width="192" height="192" rx="42" fill="#2E7D32"/>
+  <circle cx="96" cy="96" r="74" fill="#FFFBF2"/>
+  <!-- Cute Fox Icon -->
+  <!-- Ears -->
+  <path d="M50 75 L35 28 L80 55 Z" fill="#F57C00" stroke="#4E342E" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M52 68 L43 38 L72 56 Z" fill="#FFE0B2"/>
+  <path d="M142 75 L157 28 L112 55 Z" fill="#F57C00" stroke="#4E342E" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M140 68 L149 38 L120 56 Z" fill="#FFE0B2"/>
+  <!-- Head -->
+  <ellipse cx="96" cy="102" rx="52" ry="44" fill="#FB8C00" stroke="#4E342E" stroke-width="5"/>
+  <!-- Cheeks -->
+  <path d="M44 102 Q68 102 96 146 Q60 144 44 102 Z" fill="#FFF3E0"/>
+  <path d="M148 102 Q124 102 96 146 Q132 144 148 102 Z" fill="#FFF3E0"/>
+  <!-- Eyes -->
+  <circle cx="74" cy="96" r="7" fill="#3E2723"/>
+  <circle cx="72" cy="94" r="2.5" fill="#FFFFFF"/>
+  <circle cx="118" cy="96" r="7" fill="#3E2723"/>
+  <circle cx="116" cy="94" r="2.5" fill="#FFFFFF"/>
+  <!-- Nose -->
+  <ellipse cx="96" cy="116" rx="9" ry="6" fill="#3E2723"/>
+  <!-- Leaf badge -->
+  <path d="M135 135 Q165 120 160 155 Q140 165 135 135 Z" fill="#66BB6A" stroke="#2E7D32" stroke-width="4"/>
+</svg>
